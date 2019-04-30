@@ -1,0 +1,26 @@
+{
+    "name": "milescheme",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+	"test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+	"type": "git",
+	"url": "git+https://github.com/sivertsenstian/milescheme.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+	"url": "https://github.com/sivertsenstian/milescheme/issues"
+    },
+    "homepage": "https://github.com/sivertsenstian/milescheme#readme",
+    "dependencies": {
+    },
+    "devDependencies": {
+	"prettier": "^1.17.0",
+	"tslint": "^5.16.0",
+	"typescript": "^3.4.5"
+    }
+}
