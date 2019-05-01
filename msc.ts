@@ -1,4 +1,5 @@
-import { Atom, MSCSymbol, MSCNumber, Exp, List } from "./msc.types";
+import {global} from './msc.env';
+import { Atom, MSCSymbol, MSCNumber, Exp, List, Env } from "./msc.types";
 
 // Convert a string of characters into a list of tokens.
 export const tokenize = (chars: string): List => {
@@ -39,3 +40,6 @@ export const readFromTokens = (tokens: List): Exp => {
 export const parse = (program: string): Exp => {
   return readFromTokens(tokenize(program));
 };
+
+// Evaluate an expression in an environment.
+export const evaluate = (x: Exp, env : Env = global) : any => null;
