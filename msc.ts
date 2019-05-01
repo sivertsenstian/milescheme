@@ -42,4 +42,26 @@ export const parse = (program: string): Exp => {
 };
 
 // Evaluate an expression in an environment.
-export const evaluate = (x: Exp, env : Env = global) : any => null;
+export const evaluate = (x: Exp, env : Env = global) : any => { 
+  if (x instanceof MSCSymbol) {
+    return env[x.value];    
+  } 
+  else if (x instanceof MSCNumber){
+    return x.value;
+  }
+  else if (x[0].value === 'if') {
+      const [, test, conseq, alt] = x;
+      const exp = evaluate(test, env) ? conseq : alt;
+      return evaluate(exp, env);
+  }
+  else if (x[0].value === 'define') {
+    const [, symbol, exp] = x;
+    env[symbol.value] = evaluate(exp, env);
+  }
+  else {
+    const [y, ...rest] = x as Atom[];
+    const proc = evaluate(y, env);
+    const args = rest.map(arg => evaluate(arg, env));
+    return proc(...args);
+  }
+}
