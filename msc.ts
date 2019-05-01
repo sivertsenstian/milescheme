@@ -12,7 +12,7 @@ export const tokenize = (chars: string): List => {
 // Numbers become numbers; every other token is a symbol.
 export const atom = (token: string): Atom => {
   const result = Number(token);
-  return isNaN(result) ? (token as MSCSymbol) : (result as MSCNumber);
+  return isNaN(result) ? new MSCSymbol(token) : new MSCNumber(result); 
 };
 
 // Read an expression from a sequence of tokens.

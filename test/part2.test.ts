@@ -1,4 +1,5 @@
 import { atom, parse, readFromTokens } from "../msc";
+import { MSCNumber, MSCSymbol } from "../msc.types";
 
 describe("syntax tree", () => {
   describe("atom", () => {
@@ -9,17 +10,17 @@ describe("syntax tree", () => {
 
     test("returns an int", () => {
       const result = atom("1337");
-      expect(result).toEqual(1337);
+      expect(result).toEqual(new MSCNumber(1337));
     });
 
     test("returns a float", () => {
       const result = atom("3.14");
-      expect(result).toEqual(3.14);
+      expect(result).toEqual(new MSCNumber(3.14));
     });
 
     test("returns as symbol if not number", () => {
       const result = atom("something");
-      expect(result).toEqual("something");
+      expect(result).toEqual(new MSCSymbol("something"));
     });
   });
 
@@ -31,15 +32,19 @@ describe("syntax tree", () => {
 
     test("handles atoms", () => {
       const num = readFromTokens(["10"]);
-      expect(num).toEqual(10);
+      expect(num).toEqual(new MSCNumber(10));
 
       const sym = readFromTokens(["symbol"]);
-      expect(sym).toEqual("symbol");
+      expect(sym).toEqual(new MSCSymbol("symbol"));
     });
 
     test("handles a single expression", () => {
       const result = readFromTokens(["(", "define", "x", "10", ")"]);
-      expect(result).toEqual(["define", "x", 10]);
+      expect(result).toEqual([
+        new MSCSymbol("define"),
+        new MSCSymbol("x"),
+        new MSCNumber(10)
+      ]);
     });
 
     test("handles a single nested expression", () => {
@@ -53,7 +58,10 @@ describe("syntax tree", () => {
         ")",
         ")"
       ]);
-      expect(result).toEqual(["begin", ["define", "x", 10]]);
+      expect(result).toEqual([
+        new MSCSymbol("begin"),
+        [new MSCSymbol("define"), new MSCSymbol("x"), new MSCNumber(10)]
+      ]);
     });
   });
 
@@ -65,20 +73,32 @@ describe("syntax tree", () => {
 
     test("parses definition", () => {
       const result = parse("(define x 10)");
-      expect(result).toEqual(["define", "x", 10]);
+      expect(result).toEqual([
+        new MSCSymbol("define"),
+        new MSCSymbol("x"),
+        new MSCNumber(10)
+      ]);
     });
 
     test("parses a simple expression", () => {
       const result = parse("(+ 10 (+ 1 y))");
-      expect(result).toEqual(["+", 10, ["+", 1, "y"]]);
+      expect(result).toEqual([
+        new MSCSymbol("+"),
+        new MSCNumber(10),
+        [new MSCSymbol("+"), new MSCNumber(1), new MSCSymbol("y")]
+      ]);
     });
 
     test("parses a complex expression", () => {
       const result = parse("(begin (define r 10) (* pi (* r r)))");
       expect(result).toEqual([
-        "begin",
-        ["define", "r", 10],
-        ["*", "pi", ["*", "r", "r"]]
+        new MSCSymbol("begin"),
+        [new MSCSymbol("define"), new MSCSymbol("r"), new MSCNumber(10)],
+        [
+          new MSCSymbol("*"),
+          new MSCSymbol("pi"),
+          [new MSCSymbol("*"), new MSCSymbol("r"), new MSCSymbol("r")]
+        ]
       ]);
     });
   });
