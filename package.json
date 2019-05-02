@@ -1,28 +1,28 @@
 {
-    "name": "milescheme",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.ts",
-    "scripts": {
-    "test": "jest"
-    },
-    "repository": {
-	"type": "git",
-	"url": "git+https://github.com/sivertsenstian/milescheme.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-	"url": "https://github.com/sivertsenstian/milescheme/issues"
-    },
-    "homepage": "https://github.com/sivertsenstian/milescheme#readme",
-    "devDependencies": {
-    "@types/jest": "^23.3.3",
-    "@types/node": "^11.13.8",
-    "jest": "24.7.1",
-	"prettier": "^1.17.0",
-    "ts-jest": "^24.0.2",
-	"tslint": "^5.16.0",
-	"typescript": "^3.4.5"
-    }
+   "name": "milescheme",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.ts",
+   "scripts": {
+      "test": "jest"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/sivertsenstian/milescheme.git"
+   },
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/sivertsenstian/milescheme/issues"
+   },
+   "homepage": "https://github.com/sivertsenstian/milescheme#readme",
+   "devDependencies": {
+      "@types/jest": "^23.3.3",
+      "@types/node": "^11.13.8",
+      "jest": "24.7.1",
+      "prettier": "^1.17.0",
+      "ts-jest": "^24.0.2",
+      "tslint": "^5.16.0",
+      "typescript": "^3.4.5"
+   }
 }

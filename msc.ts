@@ -1,5 +1,6 @@
-import {global} from './msc.env';
-import { Atom, MSCSymbol, MSCNumber, Exp, List, Env } from "./msc.types";
+import readline from "readline";
+import { global } from "./msc.env";
+import { Atom, Env, Exp, List, MSCNumber, MSCSymbol } from "./msc.types";
 
 // Convert a string of characters into a list of tokens.
 export const tokenize = (chars: string): List => {
@@ -13,7 +14,7 @@ export const tokenize = (chars: string): List => {
 // Numbers become numbers; every other token is a symbol.
 export const atom = (token: string): Atom => {
   const result = Number(token);
-  return isNaN(result) ? new MSCSymbol(token) : new MSCNumber(result); 
+  return isNaN(result) ? new MSCSymbol(token) : new MSCNumber(result);
 };
 
 // Read an expression from a sequence of tokens.
@@ -42,26 +43,47 @@ export const parse = (program: string): Exp => {
 };
 
 // Evaluate an expression in an environment.
-export const evaluate = (x: Exp, env : Env = global) : any => { 
+export const evaluate = (x: Exp, env: Env = global): any => {
   if (x instanceof MSCSymbol) {
-    return env[x.value];    
-  } 
-  else if (x instanceof MSCNumber){
+    return env[x.value];
+  } else if (x instanceof MSCNumber) {
     return x.value;
-  }
-  else if (x[0].value === 'if') {
-      const [, test, conseq, alt] = x;
-      const exp = evaluate(test, env) ? conseq : alt;
-      return evaluate(exp, env);
-  }
-  else if (x[0].value === 'define') {
+  } else if (x[0].value === "if") {
+    const [, test, conseq, alt] = x;
+    const exp = evaluate(test, env) ? conseq : alt;
+    return evaluate(exp, env);
+  } else if (x[0].value === "define") {
     const [, symbol, exp] = x;
     env[symbol.value] = evaluate(exp, env);
-  }
-  else {
+  } else {
     const [y, ...rest] = x as Atom[];
     const proc = evaluate(y, env);
     const args = rest.map(arg => evaluate(arg, env));
     return proc(...args);
   }
-}
+};
+
+// A read-eval-print loop
+
+export const repl = (prompt = "miles =>") => {
+  const reader = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: true
+  });
+
+  reader.on("line", function(raw_input) {
+    if (raw_input) {
+      const val = evaluate(parse(raw_input));
+      if (val) {
+        console.log(`${prompt} ${schemestr(val)}`);
+      }
+      reader.prompt();
+    }
+  });
+};
+
+// Converts an object back into a Scheme-readable string.
+export const schemestr = exp => {
+  return Array.isArray(exp) ? `(${exp.map(schemestr).join(" ")})` : String(exp);
+};
