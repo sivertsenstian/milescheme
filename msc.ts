@@ -23,8 +23,8 @@ export const readFromTokens = (tokens: List): Exp => {
   }
   let token = tokens.shift();
   if (token === "(") {
-    let l : any[] = [];
-    while (tokens[0] !== ')') {
+    let l: any[] = [];
+    while (tokens[0] !== ")") {
       l.push(readFromTokens(tokens));
     }
     tokens.shift();
