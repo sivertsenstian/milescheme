@@ -64,7 +64,6 @@ export const evaluate = (x: Exp, env: Env = global): any => {
 };
 
 // A read-eval-print loop
-
 export const repl = (prompt = "miles =>") => {
   const reader = readline.createInterface({
     input: process.stdin,
@@ -74,16 +73,13 @@ export const repl = (prompt = "miles =>") => {
 
   reader.on("line", function(raw_input) {
     if (raw_input) {
-      const val = evaluate(parse(raw_input));
-      if (val) {
-        console.log(`${prompt} ${schemestr(val)}`);
-      }
+      // what to do..?
       reader.prompt();
     }
   });
 };
 
 // Converts an object back into a Scheme-readable string.
-export const schemestr = exp => {
-  return Array.isArray(exp) ? `(${exp.map(schemestr).join(" ")})` : String(exp);
+export const schemestr = (exp: any): string => {
+  return "";
 };
