@@ -64,7 +64,6 @@ export const evaluate = (x: Exp, env: Env = global): any => {
 };
 
 // A read-eval-print loop
-
 export const repl = (prompt = "miles =>") => {
   const reader = readline.createInterface({
     input: process.stdin,
@@ -72,9 +71,9 @@ export const repl = (prompt = "miles =>") => {
     terminal: true
   });
 
-  reader.on("line", function(raw_input) {
-    if (raw_input) {
-      const val = evaluate(parse(raw_input));
+  reader.on("line", rawInput => {
+    if (rawInput) {
+      const val = evaluate(parse(rawInput));
       if (val) {
         console.log(`${prompt} ${schemestr(val)}`);
       }
